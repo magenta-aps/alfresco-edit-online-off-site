@@ -14,6 +14,8 @@ import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.security.AuthorityService;
+import org.alfresco.service.cmr.security.AuthorityType;
+import org.alfresco.service.cmr.security.PermissionService;
 import org.alfresco.service.cmr.site.SiteInfo;
 import org.alfresco.service.cmr.site.SiteService;
 import org.alfresco.service.cmr.site.SiteVisibility;
@@ -24,11 +26,14 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.extensions.surf.util.AbstractLifecycleBean;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
         implements NodeServicePolicies.OnCreateChildAssociationPolicy, NodeServicePolicies.OnDeleteChildAssociationPolicy {
-    private static final String EDIT_ONLINE_SITE_SHORT_NAME = "eods";
+    public static final String EDIT_ONLINE_SITE_SHORT_NAME = "eods";
+    public static final String EDIT_ONLINE_SITE_TITLE = "Edit Online Default Site";
 
     protected NodeService nodeService;
     protected Repository repositoryHelper;
@@ -36,7 +41,7 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
     protected SiteService siteService;
     protected PolicyComponent policyComponent;
     protected TransactionService transactionService;
-    protected AuthorityService authorityService;
+    protected PermissionService permissionService;
 
     public void init() {
         policyComponent.bindAssociationBehaviour(
@@ -64,15 +69,45 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
 
     private void bootstrap() {
         if (!siteService.hasSite(EDIT_ONLINE_SITE_SHORT_NAME)) {
-            SiteInfo site = siteService.createSite("site-dashboard", EDIT_ONLINE_SITE_SHORT_NAME, "Edit Online Default Site",
-                    "Edit Online Default Site", SiteVisibility.PUBLIC);
+            String fullyAuthenticatedUser = AuthenticationUtil.getFullyAuthenticatedUser();
+            AuthenticationUtil.setAdminUserAsFullyAuthenticatedUser();
+            SiteInfo site;
+            try {
+                site = siteService.createSite("site-dashboard",
+                        EDIT_ONLINE_SITE_SHORT_NAME, EDIT_ONLINE_SITE_TITLE,
+                        EDIT_ONLINE_SITE_TITLE, SiteVisibility.PUBLIC);
+                siteService.createContainer(site.getShortName(), SiteService.DOCUMENT_LIBRARY, null, null);
+            } finally {
+                AuthenticationUtil.setFullyAuthenticatedUser(fullyAuthenticatedUser);
+            }
 
-            authorityService.addAuthority(
-                    Arrays.asList(
-                            siteService.getSiteRoleGroup(site.getShortName(), "SiteCollaborator"),
-                            siteService.getSiteRoleGroup(site.getShortName(), "SiteConsumer")),
-                    "GROUP_EVERYONE");
+            // Allow everyone to read/write on the site.
+            // We don't use the site groups, since you can't add
+            // GROUP_EVERYONE to another group.
+            permissionService.setPermission(site.getNodeRef(), "GROUP_EVERYONE", "SiteCollaborator", true);
+            permissionService.setPermission(site.getNodeRef(), "GROUP_EVERYONE", "SiteConsumer", true);
+            permissionService.setPermission(site.getNodeRef(), "GROUP_EVERYONE", "ReadPermissions", true);
         }
+//        List<String> siteRoles = siteService.getSiteRoles(EDIT_ONLINE_SITE_SHORT_NAME);
+//        String siteGroup = siteService.getSiteGroup(EDIT_ONLINE_SITE_SHORT_NAME);
+//        if (!authorityService.authorityExists(siteGroup)) {
+//            authorityService.createAuthority(AuthorityType.GROUP,
+//                    authorityService.getShortName(siteGroup));
+//        }
+//        for (String siteRole : siteRoles) {
+//            String siteRoleGroup = siteService.getSiteRoleGroup(EDIT_ONLINE_SITE_SHORT_NAME,
+//                    siteRole);
+//            // Create the authority groups for the site.
+//            // This should satisfy the site-finder page.
+//            if (!authorityService.authorityExists(siteRoleGroup)) {
+//                String siteRoleGroupShortName = authorityService.getShortName(siteRoleGroup);
+//                Set<String> shareZones = new HashSet<String>(2, 1.0f);
+//                shareZones.add(AuthorityService.ZONE_APP_SHARE);
+//                shareZones.add(AuthorityService.ZONE_AUTH_ALFRESCO);
+//                authorityService.createAuthority(AuthorityType.GROUP,
+//                        siteRoleGroupShortName, siteRoleGroupShortName, shareZones);
+//            }
+//        }
 
         NodeRef companyHome = repositoryHelper.getCompanyHome();
         List<FileInfo> folders = fileFolderService.listFolders(companyHome);
@@ -171,4 +206,10 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
     public void setTransactionService(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
+
+    public void setPermissionService(PermissionService permissionService) {
+        this.permissionService = permissionService;
+    }
+
+
 }

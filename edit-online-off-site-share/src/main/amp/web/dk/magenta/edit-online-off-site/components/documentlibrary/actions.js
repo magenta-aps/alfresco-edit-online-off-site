@@ -3,7 +3,7 @@
 if (Alfresco !== undefined && Alfresco.doclib !== undefined && Alfresco.doclib.Actions !== undefined) {
   var old_onActionEditOnline = Alfresco.doclib.Actions.prototype.onActionEditOnline;
 
-  var new_onActionEditOnline = function (record) {
+  var new_onActionEditOnline = function new_onActionEditOnline (record) {
     var newRecord = Alfresco.util.deepCopy(record);
     var loc = newRecord.location;
     if (loc.site === undefined || loc.container === undefined) {
@@ -20,7 +20,10 @@ if (Alfresco !== undefined && Alfresco.doclib !== undefined && Alfresco.doclib.A
     old_onActionEditOnline.call(this, newRecord);
   };
 
-
+  // Redefine the existing edit online actions
+  // Unfortunately, we can't just override
+  // Alfresco.doclib.Actions.prototype.onActionEditOnline because at this
+  // point, it has already be copied into the inheriting classes' prototypes
   if (Alfresco.DocumentActions !== undefined) {
     Alfresco.DocumentActions.prototype.onActionEditOnline = new_onActionEditOnline;
   }

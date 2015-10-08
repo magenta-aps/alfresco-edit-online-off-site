@@ -21,12 +21,13 @@
     <!-- A simple class that is initialized by Spring -->
     <bean id="dk.magenta.${project.artifactId}.editOnlineOffsiteBehaviour"
           class="dk.magenta.editonline.EditOnlineOffsiteBehaviour"
-          init-method="init" depends-on="${project.artifactId}_bootstrapSites">
+          init-method="init">
         <property name="nodeService" ref="NodeService"/>
         <property name="fileFolderService" ref="FileFolderService"/>
         <property name="repositoryHelper" ref="repositoryHelper"/>
         <property name="siteService" ref="SiteService"/>
 		<property name="transactionService" ref="TransactionService"/>
+		<property name="permissionService" ref="PermissionService"/>
         <property name="policyComponent" ref="policyComponent"/>
     </bean>
     
