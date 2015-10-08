@@ -81,6 +81,9 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
                 AuthenticationUtil.setFullyAuthenticatedUser(fullyAuthenticatedUser);
             }
 
+            // Add sys:hidden aspect to site
+            nodeService.addAspect(site.getNodeRef(), ContentModel.ASPECT_HIDDEN, null);
+
             // Allow everyone to read/write on the site.
             // We don't use the site groups, since you can't add
             // GROUP_EVERYONE to another group.
