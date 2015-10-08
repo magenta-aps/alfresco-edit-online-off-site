@@ -1,0 +1,15 @@
+<extension>
+    <modules>
+        <module>
+            <id>Override Edit Online Action (edit-online-off-site)</id>
+            <version>1.0</version>
+            <auto-deploy>true</auto-deploy>
+            <customizations>
+                <customization>
+                    <targetPackageRoot>org.alfresco.components.head</targetPackageRoot>
+                    <sourcePackageRoot>dk.magenta.edit-online-off-site.components.head</sourcePackageRoot>
+                </customization>
+            </customizations>
+        </module>
+    </modules>
+</extension>

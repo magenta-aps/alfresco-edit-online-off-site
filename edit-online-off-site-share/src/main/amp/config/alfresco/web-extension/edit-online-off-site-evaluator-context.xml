@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="evaluator.doclib.action.onlineEdit"
+          parent="evaluator.doclib.action.chainedMatchAll">
+        <property name="evaluators">
+            <list>
+                <!-- siteBased evaluator needs to be disabled to allow off-site documents to be opened -->
+                <!--<ref bean="evaluator.doclib.action.siteBased"/>-->
+                <ref bean="evaluator.doclib.action.onlineEditVtiServer"/>
+                <ref bean="evaluator.doclib.action.onlineEditMimetype"/>
+                <ref bean="evaluator.doclib.action.notEditBrowser"/>
+            </list>
+        </property>
+    </bean>
+</beans>
