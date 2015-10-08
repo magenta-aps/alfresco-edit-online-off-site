@@ -2,3 +2,4 @@
 *.iml
 alf_data_dev
 target
+*/overlays
