@@ -18,6 +18,8 @@ To install, run:
 
     mvn package
 
+In both the edit-online-off-site-repo and edit-online-off-site-share directories.
+
 Then, copy the AMP files in edit-online-off-site-repo/target/ and edit-online-off-site-share/target/ to the "amps" and "amps_share" folders of an Alfresco installation, respectively.
 
 
