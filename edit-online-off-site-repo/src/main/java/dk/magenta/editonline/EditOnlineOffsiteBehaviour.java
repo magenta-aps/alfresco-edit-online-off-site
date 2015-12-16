@@ -119,7 +119,7 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
         }
     }
 
-    private void addNodeToSite(NodeRef nodeRef) {
+    private void addNodeToSite(final NodeRef nodeRef) {
         runAsSystemInTransaction(new RetryingTransactionHelper.RetryingTransactionCallback<Object>() {
             @Override
             public Object execute() throws Throwable {
@@ -143,7 +143,7 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
         });
     }
 
-    private void removeNodeFromSite(NodeRef nodeRef) {
+    private void removeNodeFromSite(final NodeRef nodeRef) {
         runAsSystemInTransaction(new RetryingTransactionHelper.RetryingTransactionCallback<Object>() {
             @Override
             public Object execute() throws Throwable {
@@ -177,7 +177,7 @@ public class EditOnlineOffsiteBehaviour extends AbstractLifecycleBean
         }
     }
 
-    private <T> T runAsSystemInTransaction(RetryingTransactionHelper.RetryingTransactionCallback<T> callback) {
+    private <T> T runAsSystemInTransaction(final RetryingTransactionHelper.RetryingTransactionCallback<T> callback) {
         return AuthenticationUtil.runAsSystem(new AuthenticationUtil.RunAsWork<T>() {
             @Override
             public T doWork() throws Exception {

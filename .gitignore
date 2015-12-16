@@ -1,5 +1,5 @@
-.idea
-*.iml
-alf_data_dev
-target
+*/.idea
+*/*.iml
+*/alf_data_dev
+*/target
 */overlays
