@@ -13,14 +13,4 @@
             placed in the alfresco-allinone/share/src/main/resources/alfresco/web-extension/custom-slingshot-application-context.xml file
    -->
 
-   <!-- Add module specific messages and labels -->
-   <!--<bean id="dk.magenta.edit-online-off-site-share.resources"-->
-         <!--class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent">-->
-      <!--<property name="resourceBundles">-->
-         <!--<list>-->
-            <!--<value>alfresco.web-extension.messages.custom</value>-->
-         <!--</list>-->
-      <!--</property>-->
-   <!--</bean>-->
-
 </beans>
