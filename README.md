@@ -14,6 +14,8 @@ Additionally, the "eods" site will be hidden from the site finder in Share, and 
 
 This project requires both a Repository and Share AMP file to be installed to work.
 
+The project requires Java JDK 7 to build because it has to support both Alfresco 5.0.c and up (5.0.c requires JDK 7).
+
 To install, run:
 
     mvn package
@@ -23,7 +25,7 @@ In both the edit-online-off-site-repo and edit-online-off-site-share directories
 Then, copy the AMP files in edit-online-off-site-repo/target/ and edit-online-off-site-share/target/ to the "amps" and "amps_share" folders of an Alfresco installation, respectively.
 
 
-Tested on Alfresco 5.0.d, but should work with previous versions. Use at your own risk.
+Tested on Alfresco 5.0.c/5.0.d. Use at your own risk.
 
 LICENSE
 -------
