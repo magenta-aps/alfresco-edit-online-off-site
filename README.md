@@ -27,6 +27,17 @@ Then, copy the AMP files in edit-online-off-site-repo/target/ and edit-online-of
 
 Tested on Alfresco 5.0.c/5.0.d. Use at your own risk.
 
+
+Removing the eods site
+======================
+
+If you want to uninstall or for some other reason remove the eods site, you 
+can do this running the following included webscript as admin: 
+http://localhost:8080/alfresco/service/cleanup-eods.
+
+This will first unparent the folders from the eods site's document library 
+and then it will delete the site.
+
 LICENSE
 -------
 

@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Cleanup EODS</shortname>
+  <description>Cleanup EODS</description>
+  <url>/cleanup-eods</url>
+  <format default="json">argument</format>
+  <authentication>admin</authentication>
+  <transaction>required</transaction>
+</webscript>
