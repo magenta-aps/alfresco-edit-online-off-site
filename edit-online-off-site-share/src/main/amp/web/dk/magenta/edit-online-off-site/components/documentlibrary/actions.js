@@ -48,7 +48,11 @@ if (Alfresco !== undefined && Alfresco.doclib !== undefined && Alfresco.doclib.A
                 record.displayName = record.displayName.replace(/[~"#%&*:<>?\/\\{|}]/, "_");
               }
 
-              record.onlineEditUrl = record.onlineEditUrl.split(record.location.site.name)[0] + "_IDX_SITE_" + siteUUID + "/_IDX_NODE_" + docUUID + "/" + record.displayName;
+              // Use site name instead of _IDX_SITE_ + siteUUID in the path.
+              // This is because of a problem encountered on Alfresco 5.0.c
+              // where Office would open documents in read-only mode when
+              // using _IDX_SITE_ + siteUUID in the path.
+              record.onlineEditUrl = record.onlineEditUrl.split(record.location.site.name)[0] + record.location.site.name + "/_IDX_NODE_" + docUUID + "/" + record.displayName;
               if (record.onlineEditUrl.length > 260) {
                 var ext = record.displayName.split(".").pop();
                 var recordName = record.displayName.split(".")[0];
