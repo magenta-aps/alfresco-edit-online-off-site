@@ -50,8 +50,14 @@ if (Alfresco !== undefined && Alfresco.doclib !== undefined && Alfresco.doclib.A
 
               // Use site name instead of _IDX_SITE_ + siteUUID in the path.
               // This is because of a problem encountered on Alfresco 5.0.c
-              // where Office would open documents in read-only mode when
+              // when a user opened a document in Office 2016 (which is
+              // unsupported by Alfresco). When that happened, the document
+              // would open in read-only mode when
               // using _IDX_SITE_ + siteUUID in the path.
+              // Additionally, a folder _IDX_SITE_... would be created in
+              // the /Sites/ folder causing all following edit online
+              // actions to open documents in read-only mode until that
+              // folder was deleted.
               record.onlineEditUrl = record.onlineEditUrl.split(record.location.site.name)[0] + record.location.site.name + "/_IDX_NODE_" + docUUID + "/" + record.displayName;
               if (record.onlineEditUrl.length > 260) {
                 var ext = record.displayName.split(".").pop();
